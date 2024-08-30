@@ -11,7 +11,7 @@
   * Ao terminar siga as instruções descritas na seção **[Entrega](https://github.com/BEasier-Tech/desafio-gestao-boa#entrega)**
    
 
-### Frontend
+### Desafio para Frontend
 
 ##### Descrição
 
@@ -23,7 +23,9 @@
 ##### Requisitos
 
   * Ao iniciar a aplicação, salve alguns dados da API de personagens do Rick and Morty no localstorage.
-  * Possibilite editar, excluir e criar itens nessa lista.
+  * Mostre todos esses itens na tela inicial, com um scroll vertical e carregamento dinâmico (sem pegar tudo de uma vez)
+  * Possibilite editar e excluir personagem
+  * Possibilite criar personagem.
   * Possibilite ordenar por nome, e filtrar por "Alive" ou "Death".
 
 ### Backend
@@ -36,7 +38,6 @@
   * A API deverá consumir um banco de dados PostgreSQL(localmente)
     * O banco deverá conter a tabela **personagem**
     * definida pelo seguinte schema
-
 
           CREATE TABLE personagem (
             id SERIAL PRIMARY KEY,
@@ -99,5 +100,3 @@ Para nós o mais importante não é o projeto estar 100% funcional, e bonito, e 
 * Ao terminar verifique novamente se a solução cumpre alguns dos requisitos
 * Adicione um arquivo README.md explicando como rodar o seu projeto
 * Entre em contato com o Silvio ou Victor
-
-### Em caso de dúvidas entre em contato pelo zap (Victor ou Silvio)
