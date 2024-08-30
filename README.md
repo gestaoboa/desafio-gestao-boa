@@ -4,6 +4,8 @@
 
 # Desafio Gestão Boa
 
+## Data de entrega 09/09/2024
+
 ### Para Começar
 
   * Realize uma **fork** desse repositório no seu github pessoal
