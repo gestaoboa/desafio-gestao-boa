@@ -15,7 +15,9 @@
 
 ##### Descrição
 
-  Desenvolva uma aplicação utilizando React Native e Expo que consuma a API de personagens do [Rick And Morty](https://rickandmortyapi.com/)
+  Desenvolva uma aplicação utilizando React Native e Expo que consuma a API de personagens do [Rick And Morty](https://rickandmortyapi.com/)]
+  
+  
   **Obs**:Desenvolver uma interface amigável, e responsiva em diversos tamanhos de celular, **é um grande diferencial!**
   
 ##### Requisitos
