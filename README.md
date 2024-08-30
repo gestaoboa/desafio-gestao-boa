@@ -15,15 +15,14 @@
 
 ##### Descrição
 
-  Desenvolva uma aplicação utilizando React Native e Expo que consuma a API de personagens do [Rick And Morty](https://rickandmortyapi.com/)]
+  Desenvolva uma aplicação utilizando React Native e Expo que consuma a API de personagens do [Rick And Morty](https://rickandmortyapi.com/)
   
   
   **Obs**:Desenvolver uma interface amigável, e responsiva em diversos tamanhos de celular, **é um grande diferencial!**
   
 ##### Requisitos
 
-  * Ao iniciar a aplicação, liste todos os itens que foram adicionados no storage.
-  * Faça um get de todas informações dessa lista, e adicione localmente no storage do celular.
+  * Ao iniciar a aplicação, salve alguns dados da API de personagens do Rick and Morty no localstorage.
   * Possibilite editar, excluir e criar itens nessa lista.
   * Possibilite ordenar por nome, e filtrar por "Alive" ou "Death".
 
