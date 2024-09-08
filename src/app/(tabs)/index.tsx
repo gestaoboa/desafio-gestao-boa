@@ -50,8 +50,6 @@ export default function Home() {
           searchTerm={searchTerm}
           filter={filter}
           sortOrder={sortOrder}
-          characters={characters}
-          setCharacters={setCharacters}
         />
         <View style={styles.addbutton}>
           <AddButton onPress={() => setIsAddModalVisible(true)} />
@@ -76,7 +74,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 30,
     color: 'white',
-    fontFamily: 'Raleway_900Black',
+    fontFamily: 'Raleway',
   },
   addbutton: {
     position: "absolute",
