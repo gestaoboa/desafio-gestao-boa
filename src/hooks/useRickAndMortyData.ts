@@ -17,7 +17,7 @@ const useRickAndMortyData = () => {
 
       await AsyncStorage.setItem("characters", JSON.stringify(data.results));
     } catch (error) {
-      console.error("Failed to fetch characters:", error);
+      console.error("Erro ao carregar personagens:", error);
     } finally {
       setIsLoading(false);
     }
@@ -32,18 +32,35 @@ const useRickAndMortyData = () => {
         await fetchCharacters();
       }
     } catch (error) {
-      console.error("Failed to load characters from storage:", error);
+      console.error("Erro ao carregar personagens:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // 
   useEffect(() => {
     loadCharacters();
   }, []);
 
-  return { characters, isLoading, setCharacters };
+  const updateStorage = async (updatedCharacters: Character[]) => {
+    try {
+      await AsyncStorage.setItem(
+        "characters",
+        JSON.stringify(updatedCharacters)
+      );
+    } catch (error) {
+      console.error("Failed to update characters in storage:", error);
+    }
+  };
+
+  return {
+    characters,
+    isLoading,
+    setCharacters: (updatedCharacters: Character[]) => {
+      setCharacters(updatedCharacters),
+      updateStorage(updatedCharacters)
+    }
+  };
 };
 
 export default useRickAndMortyData;
