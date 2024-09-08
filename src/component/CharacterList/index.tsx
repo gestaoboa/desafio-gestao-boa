@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,36 +8,32 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Character from "@/interfaces/Character";
 import CharacterModal from "../CharacterModal";
 import EditModal from "../EditModal";
+import useRickAndMortyData from "@/hooks/useRickAndMortyData"; 
 
-// Props da lista de personagens, praticamente a mais importante da aplicação
+// Props da lista de personagens
 interface CharacterListProps {
   searchTerm: string;
   filter: string;
   sortOrder: "asc" | "desc";
-  characters: Character[];
-  setCharacters: (characters: Character[]) => void;
 }
 
 export default function CharacterList({
   searchTerm,
   filter,
   sortOrder,
-  characters,
-  setCharacters,
 }: CharacterListProps) {
+  const { characters, isLoading, setCharacters } = useRickAndMortyData(); 
   const [filteredCharacters, setFilteredCharacters] = useState<Character[]>([]);
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(
     null
   );
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
-  // Esse useEffect está responsável por carregar os personagens da API e atualizar a lista de personagens filtrada e ordenada
+  // Filtra e ordena os personagens conforme os critérios
   useEffect(() => {
     const getFilteredAndSortedCharacters = () => {
       let filtered = characters;
@@ -63,44 +59,6 @@ export default function CharacterList({
 
     setFilteredCharacters(getFilteredAndSortedCharacters());
   }, [searchTerm, filter, sortOrder, characters]);
-
-  // Essa função é responsável por carregar os personagens do LocalStorage
-  const loadCharactersFromStorage = async () => {
-    try {
-      const storedCharacters = await AsyncStorage.getItem("characters");
-      if (storedCharacters) {
-        setCharacters(JSON.parse(storedCharacters));
-      }
-    } catch (error) {
-      console.error("Erro ao carregar personagens do LocalStorage;", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Essa função daqui serve para salvar os personagens no LocalStorage
-  const saveCharactersToStorage = async (charactersToSave: Character[]) => {
-    try {
-      await AsyncStorage.setItem(
-        "characters",
-        JSON.stringify(charactersToSave)
-      );
-    } catch (error) {
-      console.error("Erro ao salvar personagens no LocalStorage:", error);
-    }
-  };
-
-  // useEffect para carregar os personagens através da função loadCharactersFromStorage
-  useEffect(() => {
-    loadCharactersFromStorage();
-  }, []);
-
-  // useEffect para salvar os personagens através da função saveCharactersToStorage
-  useEffect(() => {
-    if (!isLoading) {
-      saveCharactersToStorage(characters);
-    }
-  }, [characters]);
 
   // Funções para abrir e fechar o modal de click do personagem
   const openModal = (character: Character) => {
@@ -166,6 +124,10 @@ export default function CharacterList({
     </TouchableOpacity>
   );
 
+  if (isLoading) {
+    return <Text style={styles.loading}>Loading...</Text>;
+  }
+
   return (
     <View style={styles.container}>
       {filteredCharacters.length === 0 ? (
@@ -210,7 +172,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     lineHeight: 16,
-    fontFamily: "Raleway, sans-serif",
+    fontFamily: "Raleway",
     fontWeight: "400",
     padding: 5,
     textAlign: "center",
@@ -241,6 +203,12 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   noResults: {
+    color: "white",
+    fontSize: 18,
+    textAlign: "center",
+    marginTop: 20,
+  },
+  loading: {
     color: "white",
     fontSize: 18,
     textAlign: "center",
