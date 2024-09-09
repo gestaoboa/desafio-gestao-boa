@@ -49,7 +49,7 @@ const useRickAndMortyData = () => {
         JSON.stringify(updatedCharacters)
       );
     } catch (error) {
-      console.error("Failed to update characters in storage:", error);
+      console.error("Erro ao atualizar personagens:", error);
     }
   };
 

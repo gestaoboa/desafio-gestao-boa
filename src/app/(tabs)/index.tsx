@@ -8,7 +8,6 @@ import AddCharacterModal from "@/component/AddCharacterModal";
 import Character from "@/interfaces/Character";
 import useRickAndMortyData from "@/hooks/useRickAndMortyData";
 
-
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("All");
@@ -22,7 +21,7 @@ export default function Home() {
   };
 
   // Função para atualizar a ordenação da lista de personagens em asc ou desc
-  // Ultimo requisito do desafio 
+  // Ultimo requisito do desafio
   const handleSortChange = (newSortOrder: string) => {
     if (newSortOrder === "asc" || newSortOrder === "desc") {
       setSortOrder(newSortOrder);
@@ -45,16 +44,14 @@ export default function Home() {
       />
       <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm}></Search>
 
-      <View>
-        <CharacterList
-          searchTerm={searchTerm}
-          filter={filter}
-          sortOrder={sortOrder}
-        />
-        <View style={styles.addbutton}>
-          <AddButton onPress={() => setIsAddModalVisible(true)} />
-        </View>
-      </View>
+      <CharacterList
+        searchTerm={searchTerm}
+        filter={filter}
+        sortOrder={sortOrder}
+      />
+
+      <AddButton onPress={() => setIsAddModalVisible(true)} />
+
       <AddCharacterModal
         visible={isAddModalVisible}
         onClose={() => setIsAddModalVisible(false)}
@@ -68,17 +65,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: '#050D05',
+    backgroundColor: "#050D05",
     paddingTop: 50,
   },
   text: {
     fontSize: 30,
-    color: 'white',
-    fontFamily: 'Raleway',
+    color: "white",
+    fontFamily: "Raleway",
   },
   addbutton: {
     position: "absolute",
     right: 125,
-    bottom: 230
+    bottom: 230,
   },
 });
