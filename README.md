@@ -38,4 +38,8 @@
       ou
       npx expo start (recomendado)
 
+<<<<<<< HEAD
 ### Agora basta entrar no seu emulador ou no Expo GO no seu celular e testar a aplicação
+=======
+### Agora basta entrar no seu emulador ou no Expo GO no seu celular e testar a aplicação
+>>>>>>> eb26b6cc6ed5b2324ef796455e016dc1aaeb083a
