@@ -45,15 +45,17 @@ export default function CharacterList({
   const loadMoreCharacters = async () => {
     if (loadingMore || !hasMore) return; 
     setLoadingMore(true);
-  
+
     try {
       const response = await fetch(`https://rickandmortyapi.com/api/character?page=${page}`);
       const data = await response.json();
-  
+
       if (data.results.length > 0) {
-        const updatedCharacters = [...characters, ...data.results];
-        updateCharacters(updatedCharacters);
-        setFilteredCharacters(updatedCharacters);
+        const newCharacters = [...allCharacters, ...data.results];
+        // Remover duplicatas
+        const uniqueCharacters = Array.from(new Map(newCharacters.map(character => [character.id, character])).values());
+        updateCharacters(uniqueCharacters);
+        setFilteredCharacters(uniqueCharacters);
         setPage(prev => prev + 1); 
       } else {
         setHasMore(false); 
@@ -64,7 +66,6 @@ export default function CharacterList({
       setLoadingMore(false);
     }
   };
-
 
   // Filtra e ordena os personagens conforme os critérios
   useEffect(() => {
@@ -179,6 +180,7 @@ export default function CharacterList({
           onEndReachedThreshold={0.1}
         />
       )}
+      {loadingMore && <Text style={styles.loading}>Carregando mais personagens...</Text>}
       <CharacterModal
         character={selectedCharacter}
         visible={isModalVisible}

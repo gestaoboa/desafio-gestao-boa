@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, View, Text, TextInput, Button, StyleSheet } from "react-native";
 import Character from "@/interfaces/Character";
+import { Picker } from '@react-native-picker/picker';
 
 // Props do modal de adicionar personagem (do botão de adicionar)
 interface AddCharacterModalProps {
@@ -26,7 +27,7 @@ const AddCharacterModal: React.FC<AddCharacterModalProps> = ({
     setSpecies("");
     setGender("");
     setImage("");
-  }
+  };
 
   // Função para adicionar um novo personagem através do botão de adicionar
   const handleSave = () => {
@@ -46,7 +47,7 @@ const AddCharacterModal: React.FC<AddCharacterModalProps> = ({
     };
     onAddCharacter(newCharacter);
     onClose();
-    clearForm()
+    clearForm();
   };
 
   return (
@@ -59,30 +60,43 @@ const AddCharacterModal: React.FC<AddCharacterModalProps> = ({
             value={name}
             onChangeText={setName}
             placeholder="Name"
+            placeholderTextColor={"gray"}
           />
-          <TextInput
-            style={styles.input}
-            value={status}
-            onChangeText={setStatus}
+          <Picker
+            selectedValue={status}
+            style={styles.picker}
+            onValueChange={(itemValue: string) => setStatus(itemValue)}
+            selectionColor={"black"}
             placeholder="Status"
-          />
+          >
+            <Picker.Item label="Alive" value="Alive" />
+            <Picker.Item label="Dead" value="Dead" />
+            <Picker.Item label="Unknown" value="Unknown" />
+          </Picker>
           <TextInput
             style={styles.input}
             value={species}
             onChangeText={setSpecies}
             placeholder="Species"
+            placeholderTextColor={"gray"}
           />
-          <TextInput
-            style={styles.input}
-            value={gender}
-            onChangeText={setGender}
+          <Picker
+            selectedValue={gender}
+            style={styles.picker}
+            onValueChange={(itemValue: string) => setGender(itemValue)}
             placeholder="Gender"
-          />
+            
+          >
+            <Picker.Item label="Female" value="female" />
+            <Picker.Item label="Male" value="male" />
+            <Picker.Item label="Unknown" value="unknown" />
+          </Picker>
           <TextInput
             style={styles.input}
             value={image}
             onChangeText={setImage}
             placeholder="Image URL"
+            placeholderTextColor={"gray"}
           />
           <View style={styles.buttonContainer}>
             <Button title="Save" onPress={handleSave} />
@@ -124,6 +138,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     width: "100%",
+  },
+  picker: {
+    height: 40,
+    width: "100%",
+    borderColor: "#ccc",
+    borderWidth: 1,
+    marginBottom: 200,
   },
 });
 

@@ -60,6 +60,7 @@ export default function FilterButton({
               <Picker.Item label="All" value="All" />
               <Picker.Item label="Alive" value="Alive" />
               <Picker.Item label="Dead" value="Dead" />
+              <Picker.Item label="Unknown" value="Unknown" />
             </Picker>
             <Text>Sort by Name:</Text>
             <Picker
