@@ -20,8 +20,7 @@ export const styles = StyleSheet.create({
         color: "rgba(125,125,125,1)",
         fontSize: 16,
         lineHeight: 16,
-        fontFamily: "Raleway, sans-serif",
-        fontWeight: 400,
+        fontFamily: "Raleway",
       },
     
 });

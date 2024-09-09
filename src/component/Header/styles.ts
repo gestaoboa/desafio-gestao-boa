@@ -13,8 +13,7 @@ export const styles = StyleSheet.create({
     color: "rgba(255,255,255,1)",
     fontSize: 40,
     lineHeight: 40,
-    fontFamily: "Raleway, sans-serif",
-    fontWeight: "700",
+    fontFamily: "Raleway",
   },
   Fav_button: {
     width: 60,
