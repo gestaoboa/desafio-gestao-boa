@@ -24,6 +24,7 @@ export default function CharacterList({
   searchTerm,
   filter,
   sortOrder,
+
 }: CharacterListProps) {
   const { characters, isLoading, setCharacters } = useRickAndMortyData(); 
   const [filteredCharacters, setFilteredCharacters] = useState<Character[]>([]);

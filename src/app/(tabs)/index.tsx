@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Header } from "@/component/Header";
 import Search from "@/component/Search";
 import CharacterList from "@/component/CharacterList";
@@ -6,6 +6,7 @@ import { useState } from "react";
 import AddButton from "@/component/AddButton";
 import AddCharacterModal from "@/component/AddCharacterModal";
 import Character from "@/interfaces/Character";
+import useRickAndMortyData from "@/hooks/useRickAndMortyData";
 
 
 export default function Home() {
@@ -13,8 +14,7 @@ export default function Home() {
   const [filter, setFilter] = useState("All");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
-  const [characters, setCharacters] = useState<Character[]>([]);
-  const [isAddCharacterModalVisible, setIsAddCharacterModalVisible] = useState(false);
+  const { characters, setCharacters } = useRickAndMortyData();
 
   // Função para atualizar os personagens da lista de personagens após selecionar o filtro
   const handleFilterChange = (newFilter: string) => {
@@ -33,8 +33,8 @@ export default function Home() {
 
   // Função para adicionar um novo personagem através do botão de adicionar que está localizado no meio da tela
   const handleAddCharacter = (newCharacter: Character) => {
-    setCharacters((prevCharacters) => [...prevCharacters, newCharacter]);
-    setIsAddCharacterModalVisible(false);
+    const updatedCharacters = [...characters, newCharacter];
+    setCharacters(updatedCharacters);
   };
 
   return (
