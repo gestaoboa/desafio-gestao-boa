@@ -15,6 +15,14 @@ export default function Home() {
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const { characters, setCharacters } = useRickAndMortyData();
 
+
+  // Função para adicionar um novo personagem através do botão de adicionar que está localizado no meio da tela
+  const handleAddCharacter = (newCharacter: Character) => {
+    const updatedCharacters = [...characters, newCharacter];
+    setCharacters(updatedCharacters);
+  };
+
+  
   // Função para atualizar os personagens da lista de personagens após selecionar o filtro
   const handleFilterChange = (newFilter: string) => {
     setFilter(newFilter);
@@ -30,11 +38,7 @@ export default function Home() {
     }
   };
 
-  // Função para adicionar um novo personagem através do botão de adicionar que está localizado no meio da tela
-  const handleAddCharacter = (newCharacter: Character) => {
-    const updatedCharacters = [...characters, newCharacter];
-    setCharacters(updatedCharacters);
-  };
+  
 
   return (
     <View style={styles.container}>
