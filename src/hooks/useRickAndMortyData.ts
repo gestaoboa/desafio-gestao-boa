@@ -6,30 +6,40 @@ import Character from "@/interfaces/Character";
 const useRickAndMortyData = () => {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
-  // Função para dar fetch nos personagens da API
-  const fetchCharacters = async () => {
+  // Função para atualizar o AsyncStorage do app
+  const updateStorage = async (updatedCharacters: Character[]) => {
     try {
-      const response = await fetch("https://rickandmortyapi.com/api/character");
-      const data = await response.json();
-
-      setCharacters(data.results);
-
-      await AsyncStorage.setItem("characters", JSON.stringify(data.results));
+      await AsyncStorage.setItem("characters", JSON.stringify(updatedCharacters));
     } catch (error) {
-      console.error("Erro ao carregar personagens:", error);
-    } finally {
-      setIsLoading(false);
+      console.error("Erro ao atualizar personagens:", error);
     }
   };
 
-  const loadCharacters = async () => {
+  // Função para dar fetch nos personagens da API
+  const fetchCharacters = async (page: number) => {
     try {
-      const storedCharacters = await AsyncStorage.getItem("characters");
-      if (storedCharacters) {
-        setCharacters(JSON.parse(storedCharacters));
+      setIsLoading(true);
+      const response = await fetch(
+        `https://rickandmortyapi.com/api/character?page=${page}`
+      );
+      const data = await response.json();
+  
+      if (data.results && data.results.length > 0) {
+        setCharacters((prevCharacters) => {
+          // Adiciona os novos personagens sem sobrescrever os existentes
+          const newCharacters = [...prevCharacters, ...data.results];
+          const uniqueCharacters = Array.from(
+            new Map(newCharacters.map((character) => [character.id, character])).values()
+          );
+          return uniqueCharacters;
+        });
+        setPage((prevPage) => prevPage + 1); 
+        setHasMore(data.info.next !== null); 
       } else {
-        await fetchCharacters();
+        setHasMore(false);
       }
     } catch (error) {
       console.error("Erro ao carregar personagens:", error);
@@ -38,28 +48,42 @@ const useRickAndMortyData = () => {
     }
   };
 
+  // Função para carregar os personagens do AsyncStorage
+  const loadCharacters = async () => {
+    try {
+      const storedCharacters = await AsyncStorage.getItem("characters");
+      if (storedCharacters) {
+        setCharacters(JSON.parse(storedCharacters));
+      } else {
+        await fetchCharacters(1); 
+      }
+    } catch (error) {
+      console.error("Erro ao carregar personagens:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Carrega os personagens quando o hook for montado
   useEffect(() => {
     loadCharacters();
   }, []);
 
-  const updateStorage = async (updatedCharacters: Character[]) => {
-    try {
-      await AsyncStorage.setItem(
-        "characters",
-        JSON.stringify(updatedCharacters)
-      );
-    } catch (error) {
-      console.error("Erro ao atualizar personagens:", error);
-    }
-  };
+
 
   return {
     characters,
     isLoading,
+    hasMore,
+    loadMoreCharacters: () => {
+      if (hasMore && !isLoading) {
+        fetchCharacters(page);
+      }
+    },
     setCharacters: (updatedCharacters: Character[]) => {
-      setCharacters(updatedCharacters),
-      updateStorage(updatedCharacters)
-    }
+      setCharacters(updatedCharacters);
+      updateStorage(updatedCharacters);
+    },
   };
 };
 

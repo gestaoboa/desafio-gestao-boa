@@ -13,7 +13,7 @@ export default function Home() {
   const [filter, setFilter] = useState("All");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
-  const { characters, setCharacters } = useRickAndMortyData();
+  const { characters, isLoading, hasMore, loadMoreCharacters, setCharacters } = useRickAndMortyData();
 
   // Função para adicionar um novo personagem através do botão de adicionar que está localizado no meio da tela
   const handleAddCharacter = (newCharacter: Character) => {
@@ -45,11 +45,16 @@ export default function Home() {
       <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm}></Search>
 
       <CharacterList
-        characters={characters}
-        setCharacters={setCharacters}
         searchTerm={searchTerm}
         filter={filter}
         sortOrder={sortOrder}
+        setFilter={setFilter}
+        setSearchTerm={setSearchTerm}
+        characters={characters}
+        isLoading={isLoading}
+        hasMore={hasMore}
+        loadMoreCharacters={loadMoreCharacters}
+        setCharacters={setCharacters}
       />
 
       <AddButton onPress={() => setIsAddModalVisible(true)} />
