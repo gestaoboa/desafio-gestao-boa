@@ -11,7 +11,6 @@ import {
 import Character from "@/interfaces/Character";
 import CharacterModal from "../CharacterModal";
 import EditModal from "../EditModal";
-import useRickAndMortyData from "@/hooks/useRickAndMortyData";
 
 // Props da lista de personagens
 interface CharacterListProps {
@@ -32,8 +31,6 @@ const BASE_URL = "https://rickandmortyapi.com/api/character";
 export default function CharacterList({
   searchTerm,
   filter,
-  setSearchTerm,
-  setFilter,
   sortOrder,
   characters,
   isLoading,
