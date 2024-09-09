@@ -11,28 +11,60 @@ import {
 import Character from "@/interfaces/Character";
 import CharacterModal from "../CharacterModal";
 import EditModal from "../EditModal";
-import useRickAndMortyData from "@/hooks/useRickAndMortyData"; 
+import useRickAndMortyData from "@/hooks/useRickAndMortyData";
 
 // Props da lista de personagens
 interface CharacterListProps {
   searchTerm: string;
   filter: string;
   sortOrder: "asc" | "desc";
+  characters: Character[];
+  setCharacters: (characters: Character[]) => void;
 }
+
+const BASE_URL = "https://rickandmortyapi.com/api/character";
 
 export default function CharacterList({
   searchTerm,
   filter,
   sortOrder,
-
+  characters,
+  setCharacters,
 }: CharacterListProps) {
-  const { characters, isLoading, setCharacters } = useRickAndMortyData(); 
+  const { characters: allCharacters, isLoading, setCharacters: updateCharacters } = useRickAndMortyData();
   const [filteredCharacters, setFilteredCharacters] = useState<Character[]>([]);
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(
     null
   );
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [page, setPage] = useState(1); // Estado atual da página (para fazer o carregamento dinâmico)
+  const [hasMore, setHasMore] = useState(true); // Para verificar se há mais personagens para carregar
+  const [loadingMore, setLoadingMore] = useState(false); // Carregar mais dados
+
+  const loadMoreCharacters = async () => {
+    if (loadingMore || !hasMore) return; 
+    setLoadingMore(true);
+  
+    try {
+      const response = await fetch(`https://rickandmortyapi.com/api/character?page=${page}`);
+      const data = await response.json();
+  
+      if (data.results.length > 0) {
+        const updatedCharacters = [...characters, ...data.results];
+        updateCharacters(updatedCharacters);
+        setFilteredCharacters(updatedCharacters);
+        setPage(prev => prev + 1); 
+      } else {
+        setHasMore(false); 
+      }
+    } catch (error) {
+      console.error("Erro ao carregar mais personagens:", error);
+    } finally {
+      setLoadingMore(false);
+    }
+  };
+
 
   // Filtra e ordena os personagens conforme os critérios
   useEffect(() => {
@@ -132,7 +164,7 @@ export default function CharacterList({
   return (
     <View style={styles.container}>
       {filteredCharacters.length === 0 ? (
-        <Text style={styles.noResults}>No characters found</Text>
+        <Text style={styles.noResults}>Nenhum personagem encontrado.</Text>
       ) : (
         <FlatList
           numColumns={2}
@@ -143,6 +175,8 @@ export default function CharacterList({
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
           keyboardShouldPersistTaps="handled"
+          onEndReached={loadMoreCharacters}
+          onEndReachedThreshold={0.1}
         />
       )}
       <CharacterModal
